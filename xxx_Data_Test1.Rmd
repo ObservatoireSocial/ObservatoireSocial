@@ -1,0 +1,963 @@
+---
+title: "INDICATEURS DIHAL"
+output: html_document
+css: Styles.css
+classoption:
+  - twocolumn
+
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#library(shiny)
+library(htmltools)
+# Graphiques
+library(plotly)
+library(highcharter)
+library(echarts4r)
+library(echarty)
+library(ggplot2)
+library(ggalt)
+library(sparkline)
+# Manipulation données
+library(lubridate)
+library(dplyr)
+# Pour le rendu des tableaux
+library(kableExtra)
+library(DT)
+library(reactable)
+library(reactablefmtr)
+# Gestion de l'interactivité
+library(crosstalk)
+
+# Divers
+library(htmltools)
+library(fontawesome)
+
+#SOURCES
+source("Data/Consolidation_Personnes.R")
+source("Data/Consolidation_Ménages.R")
+source("Data/Consolidation_Approfondie.R")
+```
+
+
+## {.tabset .tabset-fade .tabset-pills}
+
+### **En personnes**
+
+#### {.tabset .tabset-fade}
+
+##### **Graphiques**
+
+:::::::::::::: {.columns}
+::: {.column width="47%"}
+```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.width=6}
+#### INDICATEUR 1 ####  
+
+   Indicateur_Last <- DASHBOARD2 %>%
+      filter(SEMAINES== max(SEMAINES))
+
+  tags$p(Indicateur_Last$Indicateur1,
+      style = "font-family:'Montserrat';
+               font-size:50px;
+               font-weight:bold;
+               color:#404040")
+
+  tags$p("Personnes distinctes qui ont formulé au moins une demande d'hébergement auprès du 115",
+    style = "font-family:'Montserrat';
+             font-size:16px;
+             font-weight:bold;
+             color:#404040;
+    margin-top:-20px")
+ 
+    plot_ly(DASHBOARD2,
+            x=~SEMAINES,
+            y=~Indicateur1, 
+            type = 'scatter', 
+            mode = 'lines',
+            fill = "tozeroy",
+            fillcolor = "#DBDBDB",
+            line = list(shape = "spline",
+                        color="#A6A6A6",
+                        width = 1)
+    )%>%
+      config(displayModeBar = FALSE
+    )%>%
+      add_trace(x=Indicateur_1_Last$SEMAINES,
+                y=Indicateur_1_Last$Pers_dist_en_Dem,
+                marker = list(color = "white",size = 10,line = list(color = "#404040", width = 3))
+    )%>% #---- Point de fixation 
+      add_trace(x=Indicateur_1_Last$SEMAINES+ddays(15),
+                y=0
+    )%>%
+      layout(xaxis = list(title = list(font = list(family = "Montserrat",size=10)),
+                            tickfont = list(family = "Montserrat", size = 8)),
+             yaxis = list(title = list(text="Nombre de personnes", font = list(family = "Montserrat",size=10)),
+                     tickfont = list(family = "Montserrat", size = 8),
+                     range = c(0,600),
+                     zeroline =FALSE),
+             autosize = TRUE,
+             #width = 500,
+             height = 200,
+             showlegend = FALSE
+    )
+
+   tags$p("Cet indicateur révèle le nombre de personne qui ont sollicité le 115 dans la semaine, qu'elles aient
+          réussi à le joindre une ou plusieurs fois dans la période et qu'elle que soit leur situation résidentielle.
+          Il permet de prendre en compte le plus grand nombre de personnes malgré les difficultés d'accessibilité
+          au 115 et de lisser les effets journaliers observés.",
+    style = "font-family:'Montserrat';
+             font-size:10px;
+             font-style:italic;
+             color:#404040;
+    margin-top:-300px")
+```
+:::
+::: {.column width="6%"}
+:::
+
+::: {.column width="47%"}
+```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.width=6}
+#### INDICATEUR 2 ####  
+
+   Indicateur_Last <- DASHBOARD2 %>%
+      filter(SEMAINES== max(SEMAINES))
+
+  tags$p(Indicateur_Last$Indicateur2,
+      style = "font-family:'Montserrat';
+               font-size:50px;
+               font-weight:bold;
+               color:#2A9D8F")
+  
+  tags$p("Personnes distinctes dont au moins une demande d'hébergement a été pourvue par le 115",
+    style = "font-family:'Montserrat';
+             font-size:16px;
+             font-weight:bold;
+             color:#404040;
+    margin-top:-20px")
+  
+    plot_ly(DASHBOARD2,
+            x=~SEMAINES,
+            y=~Indicateur2, 
+            type = 'scatter', 
+            mode = 'lines',
+            fill = "tozeroy",
+            fillcolor = "#D4EBE9",
+            line = list(shape = "spline",
+                        color="#2A9D8F",
+                        width = 1)
+    )%>%
+      config(displayModeBar = FALSE
+    )%>%
+      add_trace(x=Indicateur_2_Last$SEMAINES,
+                y=Indicateur_2_Last$n,
+                marker = list(color = "white",size = 10,line = list(color = "#2A9D8F", width = 3))
+    )%>% #---- Point de fixation 
+      add_trace(x=Indicateur_2_Last$SEMAINES+ddays(15),
+                y=0
+    )%>%
+      layout(xaxis = list(title = list(font = list(family = "Montserrat",size=10)),
+                            tickfont = list(family = "Montserrat", size = 8)),
+             yaxis = list(title = list(text="Nombre de personnes", font = list(family = "Montserrat",size=10)),
+                     tickfont = list(family = "Montserrat", size = 8),
+                     range = c(0,600),
+                     zeroline =FALSE),
+             autosize = TRUE,
+             #width = 500,
+             height = 200,
+             showlegend = FALSE
+    )
+   tags$p("Cet indicateur révèle le nombre de personnes qui ont accédé à un hébergement 
+          et ont quitté la rue ou une situation très précaire.",
+    style = "font-family:'Montserrat';
+             font-size:10px;
+             font-style:italic;
+             color:#404040;
+    margin-top:-300px")
+```
+:::
+::::::::::::::
+
+---
+
+:::::::::::::: {.columns}
+::: {.column width="47%"}
+```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.width=6}
+#### INDICATEUR 3 ####  
+
+   Indicateur_Last <- DASHBOARD2 %>%
+      filter(SEMAINES== max(SEMAINES))
+
+  tags$p(Indicateur_Last$Indicateur3,
+      style = "font-family:'Montserrat';
+               font-size:50px;
+               font-weight:bold;
+               color:#D2386A")
+
+  tags$p("Personnes distinctes dont auncune demande d'hébergement n'a été pourvue par le 115",
+    style = "font-family:'Montserrat';
+             font-size:16px;
+             font-weight:bold;
+             color:#404040;
+    margin-top:-20px")
+ 
+    plot_ly(DASHBOARD2,
+            x=~SEMAINES,
+            y=~Indicateur3, 
+            type = 'scatter', 
+            mode = 'lines',
+            fill = "tozeroy",
+            fillcolor = "#F6D7E1",
+            line = list(shape = "spline",
+                        color="#D2386A",
+                        width = 1)
+    )%>%
+      config(displayModeBar = FALSE
+    )%>%
+      add_trace(x=Indicateur_3_Last$SEMAINES,
+                y=Indicateur_3_Last$Pers_Dist_Aucune_Pourv,
+                marker = list(color = "white",size = 10,line = list(color = "#D2386A", width = 3))
+    )%>% #---- Point de fixation 
+      add_trace(x=Indicateur_3_Last$SEMAINES+ddays(15),
+                y=0
+    )%>%
+      layout(xaxis = list(title = list(font = list(family = "Montserrat",size=10)),
+                            tickfont = list(family = "Montserrat", size = 8)),
+             yaxis = list(title = list(text="Nombre de personnes", font = list(family = "Montserrat",size=10)),
+                     tickfont = list(family = "Montserrat", size = 8),
+                     range = c(0,600),
+                     zeroline =FALSE),
+             autosize = TRUE,
+             #width = 500,
+             height = 200,
+             showlegend = FALSE
+    )
+
+   tags$p("Cet indicateur révèle le nombre de personne restées sans solution à leur problématique 
+          de vie à la rue ou de mal logement. Il est le principal élément d'appréciation de l'étendue
+          des besoins d'hébergement sur le territoire.",
+    style = "font-family:'Montserrat';
+             font-size:10px;
+             font-style:italic;
+             color:#404040;
+    margin-top:-300px")
+```
+:::
+::: {.column width="6%"}
+:::
+
+::: {.column width="47%"}
+```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.width=6}
+#### INDICATEUR 4 ####  
+
+   Indicateur_Last <- DASHBOARD2 %>%
+      filter(SEMAINES== max(SEMAINES))
+
+  tags$p(Indicateur_Last$Indicateur4,
+      style = "font-family:'Montserrat';
+               font-size:50px;
+               font-weight:bold;
+               color:#FF7E6A")
+  
+  tags$p("Personnes distinctes qui ont formulé au moins une demande d'hébergement auprès du 115 
+         et qui étaient inconnues",
+    style = "font-family:'Montserrat';
+             font-size:16px;
+             font-weight:bold;
+             color:#404040;
+    margin-top:-20px")
+  
+    plot_ly(DASHBOARD2,
+            x=~SEMAINES,
+            y=~Indicateur4, 
+            type = 'scatter', 
+            mode = 'lines',
+            fill = "tozeroy",
+            fillcolor = "#FFE5E1",
+            line = list(shape = "spline",
+                        color="#FF7E6A",
+                        width = 1)
+    )%>%
+      config(displayModeBar = FALSE
+    )%>%
+      add_trace(x=Indicateur_4_Last$SEMAINES,
+                y=Indicateur_4_Last$Pers_Dist_Primo,
+                marker = list(color = "white",size = 10,line = list(color = "#FF7E6A", width = 3))
+    )%>% #---- Point de fixation 
+      add_trace(x=Indicateur_4_Last$SEMAINES+ddays(15),
+                y=0
+    )%>%
+      layout(xaxis = list(title = list(font = list(family = "Montserrat",size=10)),
+                            tickfont = list(family = "Montserrat", size = 8)),
+             yaxis = list(title = list(text="Nombre de personnes", font = list(family = "Montserrat",size=10)),
+                     tickfont = list(family = "Montserrat", size = 8),
+                     range = c(0,600),
+                     zeroline =FALSE),
+             autosize = TRUE,
+             #width = 500,
+             height = 200,
+             showlegend = FALSE
+    )
+   tags$p("Cet indicateur révèle le flux des personnes qui sollicitent un hébergement auprès du 115 pour la première fois. Il permet d'apprécier la pression exercée par le phénomène dynamique et multifactoriel du sans-abrisme.",
+    style = "font-family:'Montserrat';
+             font-size:10px;
+             font-style:italic;
+             color:#404040;
+    margin-top:-300px")
+```
+:::
+::::::::::::::
+
+---
+
+##### **Tableau**
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+#### TABLE #####
+
+dash_desc <- DASHBOARD2 %>%
+  arrange(desc(SEMAINES))
+
+dash_desc_p <- dash_desc[c(1:9)]
+
+
+htmltools::browsable(
+  tagList(
+    tags$button(
+      tagList(fontawesome::fa("download"), "Télécharger le CSV"),
+      onclick = "Reactable.downloadDataCSV('download-table', 'Indicateurs_DIHAL.csv',{ sep: ';' })"
+    ),
+    
+
+reactable(dash_desc_p,
+          defaultPageSize = 15,
+          striped = TRUE, 
+          defaultSorted = list(SEMAINES = "desc"),
+          language = reactableLang(pagePrevious = "Précédente",
+                             pageNext = "Suivante",
+                             pageInfo = "{rowStart}\u2013{rowEnd} de {rows} lignes"),
+          columns = list(
+            SEMAINES = colDef(format = colFormat(date = TRUE), 
+                              style = list(borderRight = "2px solid #eee")),
+            Indicateur1 = colDef(name = "Indicateur 1", 
+                                 align = "center", 
+                                 headerStyle = list(color = "#404040")),
+            Ind1_Evol = colDef(name = "Évolution",
+                               align = "center",
+                               headerStyle = list(color = "#404040"),
+                               cell = data_bars(
+                                 data = dash_desc_p,
+                                 text_position = "outside-end",
+                                 fill_color = c("#C40233","#127852"),
+                                 box_shadow = TRUE
+                               ),
+                               style = list(borderRight = "2px solid #eee")),
+            Indicateur2 = colDef(name = "Indicateur 2", 
+                                 align = "center", 
+                                 headerStyle = list(color = "#2A9D8F")),
+            Ind2_Evol = colDef(name = "Évolution", 
+                               align = "center", 
+                               headerStyle = list(color = "#2A9D8F"),
+                               cell = data_bars(
+                                 data = dash_desc_p,
+                                 text_position = "outside-end",
+                                 fill_color = c("#C40233","#127852"),
+                                 box_shadow = TRUE
+                               ),
+                               style = list(borderRight = "2px solid #eee")),
+            Indicateur3 = colDef(name = "Indicateur 3", 
+                                 align = "center", 
+                                 headerStyle = list(color = "#D2386A")),
+            Ind3_Evol = colDef(name = "Évolution", 
+                               align = "center", 
+                               headerStyle = list(color = "#D2386A"),
+                               cell = data_bars(
+                                 data = dash_desc_p,
+                                 text_position = "outside-end",
+                                 fill_color = c("#C40233","#127852"),
+                                 box_shadow = TRUE
+                               ),
+                               style = list(borderRight = "2px solid #eee")),
+            Indicateur4 = colDef(name = "Indicateur 4", 
+                                 align = "center", 
+                                 headerStyle = list(color = "#FF7E6A")),
+            Ind4_Evol = colDef(name = "Évolution", 
+                               align = "center", 
+                               headerStyle = list(color = "#FF7E6A"),
+                               cell = data_bars(
+                                 data = dash_desc_p,
+                                 text_position = "outside-end",
+                                 fill_color = c("#C40233","#127852"),
+                                 box_shadow = TRUE
+                               ),
+                               style = list(borderRight = "2px solid #eee"))
+          ),
+          elementId = "download-table"
+          )
+))
+#### ####
+```
+
+---
+
+##### **Pour aller plus loin**
+ 
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+Dash_AP <- DASHBOARD_AP[c(2,4,3,5,6,7,8)]
+Dash_AP$Date_num <- as.numeric(Dash_AP$SEMAINES)
+df_AP <- SharedData$new(data = Dash_AP)
+
+table_AP <-df_AP %>%
+  reactable(striped = TRUE, defaultSorted = list(SEMAINES = "desc"),
+    language = reactableLang(pagePrevious = "Précédente",
+                             pageNext = "Suivante",
+                             pageInfo = "{rowStart}\u2013{rowEnd} de {rows} lignes"),
+    groupBy = c("SEMAINES","NATIONALITE_gp","TYPOLOGIE_gp"),
+    columns = list(
+      Date_num = colDef(show = FALSE),
+      SEMAINES = colDef(format = colFormat(date = TRUE), style = list(borderRight = "1px solid #eee")),
+      NATIONALITE_gp = colDef(name = "NATIONALITÉ",show = FALSE),
+      TYPOLOGIE_gp = colDef(name = "TYPOLOGIE", style = list(borderRight = "1px solid #eee"),show = FALSE),
+      Indicateur1 = colDef(name = "Indicateur 1", aggregate = "sum", align = "center", headerStyle = list(color = "#404040")),
+      Indicateur2 = colDef(name = "Indicateur 2", aggregate = "sum", align = "center", headerStyle = list(color = "#2A9D8F")),
+      Indicateur3 = colDef(name = "Indicateur 3", aggregate = "sum", align = "center", headerStyle = list(color = "#D2386A")),
+      Indicateur4 = colDef(name = "Indicateur 4", aggregate = "sum", align = "center", headerStyle = list(color = "#FF7E6A"))
+    ),
+    columnGroups = list(
+      colGroup(name = " Caractéristiques", columns = c("NATIONALITE_gp","TYPOLOGIE_gp")),
+      colGroup(name = "Indicateurs", columns = c("Indicateur1", "Indicateur2", "Indicateur3", "Indicateur4"))
+    )
+  ) 
+#%>% google_font(font_family = "Raleway")
+
+bscols(widths = c(2,NA),
+       list(
+         div(style = css(margin_top="100px", color="#404040"),
+           filter_checkbox(id = "nat",label = "NATIONALITÉ", sharedData = df_AP, group = ~NATIONALITE_gp),
+           filter_checkbox(id = "typ",label = "TYPOLOGIE", sharedData = df_AP, group = ~TYPOLOGIE_gp)
+#           filter_slider(id = "per",label = "Période", sharedData = df_AP, group = ~Date_num)
+         )
+       ),
+       table_AP 
+       )
+
+#### SPARKLINE
+################################################################################
+
+#dash_ap2 <- Dash_AP[c(1:4)]
+dash_ap2 <- Dash_AP[c(1:7)]
+dash_ap2 <- dash_ap2 %>%
+  group_by(NATIONALITE_gp,TYPOLOGIE_gp) %>%
+  summarize(across(where(is.numeric),list))
+#  summarize(Ind1_ap=list(Indicateur1)) 
+
+sd_dash_ap2 <- SharedData$new(data = dash_ap2)
+
+reactable(
+  sd_dash_ap2,
+  #groupBy = c("NATIONALITE_gp","TYPOLOGIE_gp"),
+  columns = list(
+    NATIONALITE_gp = colDef(maxWidth = 150, name = "NATIONALITE", show = TRUE),
+    TYPOLOGIE_gp = colDef(maxWidth = 200, name = "TYPOLOGIE", style = list(borderRight = "1px solid #eee"), show = TRUE),
+    Indicateur1 = colDef(maxWidth = 250,
+                     name = "Indicateur 1",
+                     aggregate = "sum",
+                     align = "center",
+                     cell = react_sparkline(sd_dash_ap2,
+                                            height = 50,
+                                            tooltip_type = 2,
+                                            show_area = TRUE,
+                                            line_width = 1,
+                                            highlight_points = highlight_points(last = "#404040")
+                                            )
+                     ),
+    Indicateur2 = colDef(maxWidth = 250,
+                     name = "Indicateur 2",
+                     aggregate = "sum",
+                     align = "center",
+                     cell = react_sparkline(sd_dash_ap2,
+                                            height = 50,
+                                            tooltip_type = 2,
+                                            line_color = "#2A9D8F",
+                                            show_area = TRUE,
+                                            line_width = 1,
+                                            highlight_points = highlight_points(last = "#2A9D8F")
+                                            ),
+                     headerStyle = list(color = "#2A9D8F")
+                     ),
+    Indicateur3 = colDef(maxWidth = 250,
+                     name = "Indicateur 3",
+                     aggregate = "sum",
+                     align = "center",
+                     cell = react_sparkline(sd_dash_ap2,
+                                            height = 50,
+                                            tooltip_type = 2,
+                                            line_color = "#D2386A",
+                                            show_area = TRUE,
+                                            line_width = 1,
+                                            highlight_points = highlight_points(last = "#D2386A")
+                                            ),
+                     headerStyle = list(color = "#D2386A")
+                     ),
+    Indicateur4 = colDef(maxWidth = 250,
+                     name = "Indicateur 4",
+                     aggregate = "sum",
+                     align = "center",
+                     cell = react_sparkline(sd_dash_ap2,
+                                            height = 50,
+                                            tooltip_type = 2,
+                                            line_color = "#FF7E6A",
+                                            show_area = TRUE,
+                                            line_width = 1,
+                                            highlight_points = highlight_points(last = "#FF7E6A")
+                                            ),
+                     headerStyle = list(color = "#FF7E6A")
+                     )
+  )
+)
+
+filter_checkbox(id = "nat",label = "Nationalité", sharedData = sd_dash_ap2, group = ~NATIONALITE_gp)
+
+################################################################################
+
+
+
+```
+
+---
+ 
+ La typololgie du ménage retenue est celle de la dernière demande
+ 
+### **En ménages**
+
+#### {.tabset .tabset-fade}
+
+##### **Graphiques**
+
+:::::::::::::: {.columns}
+::: {.column width="47%"}
+```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.width=6}
+#### INDICATEUR 1 ####  
+
+   Indicateur_Last_m <- DASHBOARD_m %>%
+      filter(SEMAINES== max(SEMAINES))
+
+  tags$p(Indicateur_Last_m$Indicateur1,
+      style = "font-family:'Montserrat';
+               font-size:50px;
+               font-weight:bold;
+               color:#404040")
+
+  tags$p("Ménages distincts qui ont formulé au moins une demande d'hébergement auprès du 115",
+    style = "font-family:'Montserrat';
+             font-size:16px;
+             font-weight:bold;
+             color:#404040;
+    margin-top:-20px")
+ 
+    plot_ly(DASHBOARD_m,
+            x=~SEMAINES,
+            y=~Indicateur1, 
+            type = 'scatter', 
+            mode = 'lines',
+            fill = "tozeroy",
+            fillcolor = "#DBDBDB",
+            line = list(shape = "spline",
+                        color="#A6A6A6",
+                        width = 1)
+    )%>%
+      config(displayModeBar = FALSE
+    )%>%
+      add_trace(x=Indicateur_1m_Last$SEMAINES,
+                y=Indicateur_1m_Last$Men_dist_en_Dem,
+                marker = list(color = "white",size = 10,line = list(color = "#404040", width = 3))
+    )%>% #---- Point de fixation 
+      add_trace(x=Indicateur_1_Last$SEMAINES+ddays(15),
+                y=0
+    )%>%
+      layout(xaxis = list(title = list(font = list(family = "Montserrat",size=10)),
+                            tickfont = list(family = "Montserrat", size = 8)),
+             yaxis = list(title = list(text="Nombre de personnes", font = list(family = "Montserrat",size=10)),
+                     tickfont = list(family = "Montserrat", size = 8),
+                     range = c(0,600),
+                     zeroline =FALSE),
+             autosize = TRUE,
+             #width = 500,
+             height = 200,
+             showlegend = FALSE
+    )
+
+   tags$p("Cet indicateur révèle le nombre de ménages qui ont sollicité le 115 dans la semaine, qu'ils aient
+          réussi à le joindre une ou plusieurs fois dans la période et qu'elle que soit leur situation résidentielle.
+          Il permet de prendre en compte le plus grand nombre de ménages malgré les difficultés d'accessibilité
+          au 115 et de lisser les effets journaliers observés.",
+    style = "font-family:'Montserrat';
+             font-size:10px;
+             font-style:italic;
+             color:#404040;
+    margin-top:-300px")
+```
+:::
+::: {.column width="6%"}
+:::
+
+::: {.column width="47%"}
+```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.width=6}
+#### INDICATEUR 2 ####  
+
+   Indicateur_Last_m <- DASHBOARD_m %>%
+      filter(SEMAINES== max(SEMAINES))
+
+  tags$p(Indicateur_Last_m$Indicateur2,
+      style = "font-family:'Montserrat';
+               font-size:50px;
+               font-weight:bold;
+               color:#2A9D8F")
+  
+  tags$p("Ménages distincts dont au moins une demande d'hébergement a été pourvue par le 115",
+    style = "font-family:'Montserrat';
+             font-size:16px;
+             font-weight:bold;
+             color:#404040;
+    margin-top:-20px")
+  
+    plot_ly(DASHBOARD_m,
+            x=~SEMAINES,
+            y=~Indicateur2, 
+            type = 'scatter', 
+            mode = 'lines',
+            fill = "tozeroy",
+            fillcolor = "#D4EBE9",
+            line = list(shape = "spline",
+                        color="#2A9D8F",
+                        width = 1)
+    )%>%
+      config(displayModeBar = FALSE
+    )%>%
+      add_trace(x=Indicateur_2m_Last$SEMAINES,
+                y=Indicateur_2m_Last$m,
+                marker = list(color = "white",size = 10,line = list(color = "#2A9D8F", width = 3))
+    )%>% #---- Point de fixation 
+      add_trace(x=Indicateur_2_Last$SEMAINES+ddays(15),
+                y=0
+    )%>%
+      layout(xaxis = list(title = list(font = list(family = "Montserrat",size=10)),
+                            tickfont = list(family = "Montserrat", size = 8)),
+             yaxis = list(title = list(text="Nombre de personnes", font = list(family = "Montserrat",size=10)),
+                     tickfont = list(family = "Montserrat", size = 8),
+                     range = c(0,600),
+                     zeroline =FALSE),
+             autosize = TRUE,
+             #width = 500,
+             height = 200,
+             showlegend = FALSE
+    )
+   tags$p("Cet indicateur révèle le nombre de ménages qui ont accédé à un hébergement 
+          et ont quitté la rue ou une situation très précaire.",
+    style = "font-family:'Montserrat';
+             font-size:10px;
+             font-style:italic;
+             color:#404040;
+    margin-top:-300px")
+```
+:::
+::::::::::::::
+
+---
+
+:::::::::::::: {.columns}
+::: {.column width="47%"}
+```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.width=6}
+#### INDICATEUR 3 ####  
+
+   Indicateur_Last_m <- DASHBOARD_m %>%
+      filter(SEMAINES== max(SEMAINES))
+
+  tags$p(Indicateur_Last_m$Indicateur3,
+      style = "font-family:'Montserrat';
+               font-size:50px;
+               font-weight:bold;
+               color:#D2386A")
+
+  tags$p("Ménages distincts dont auncune demande d'hébergement n'a été pourvue par le 115",
+    style = "font-family:'Montserrat';
+             font-size:16px;
+             font-weight:bold;
+             color:#404040;
+    margin-top:-20px")
+ 
+    plot_ly(DASHBOARD_m,
+            x=~SEMAINES,
+            y=~Indicateur3, 
+            type = 'scatter', 
+            mode = 'lines',
+            fill = "tozeroy",
+            fillcolor = "#F6D7E1",
+            line = list(shape = "spline",
+                        color="#D2386A",
+                        width = 1)
+    )%>%
+      config(displayModeBar = FALSE
+    )%>%
+      add_trace(x=Indicateur_3m_Last$SEMAINES,
+                y=Indicateur_3m_Last$Men_Dist_Aucune_Pourv,
+                marker = list(color = "white",size = 10,line = list(color = "#D2386A", width = 3))
+    )%>% #---- Point de fixation 
+      add_trace(x=Indicateur_3m_Last$SEMAINES+ddays(15),
+                y=0
+    )%>%
+      layout(xaxis = list(title = list(font = list(family = "Montserrat",size=10)),
+                            tickfont = list(family = "Montserrat", size = 8)),
+             yaxis = list(title = list(text="Nombre de personnes", font = list(family = "Montserrat",size=10)),
+                     tickfont = list(family = "Montserrat", size = 8),
+                     range = c(0,600),
+                     zeroline =FALSE),
+             autosize = TRUE,
+             #width = 500,
+             height = 200,
+             showlegend = FALSE
+    )
+
+   tags$p("Cet indicateur révèle le nombre de ménages restés sans solution à leur problématique 
+          de vie à la rue ou de mal logement. Il est le principal élément d'appréciation de l'étendue
+          des besoins d'hébergement sur le territoire.",
+    style = "font-family:'Montserrat';
+             font-size:10px;
+             font-style:italic;
+             color:#404040;
+    margin-top:-300px")
+```
+:::
+::: {.column width="6%"}
+:::
+
+::: {.column width="47%"}
+```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.width=6}
+#### INDICATEUR 4 ####  
+
+   Indicateur_Last_m <- DASHBOARD_m %>%
+      filter(SEMAINES== max(SEMAINES))
+
+  tags$p(Indicateur_Last_m$Indicateur4,
+      style = "font-family:'Montserrat';
+               font-size:50px;
+               font-weight:bold;
+               color:#FF7E6A")
+  
+  tags$p("Personnes distinctes qui ont formulé au moins une demande d'hébergement auprès du 115 
+         et qui étaient inconnues",
+    style = "font-family:'Montserrat';
+             font-size:16px;
+             font-weight:bold;
+             color:#404040;
+    margin-top:-20px")
+  
+    plot_ly(DASHBOARD_m,
+            x=~SEMAINES,
+            y=~Indicateur4, 
+            type = 'scatter', 
+            mode = 'lines',
+            fill = "tozeroy",
+            fillcolor = "#FFE5E1",
+            line = list(shape = "spline",
+                        color="#FF7E6A",
+                        width = 1)
+    )%>%
+      config(displayModeBar = FALSE
+    )%>%
+      add_trace(x=Indicateur_4m_Last$SEMAINES,
+                y=Indicateur_4m_Last$Men_Dist_Primo,
+                marker = list(color = "white",size = 10,line = list(color = "#FF7E6A", width = 3))
+    )%>% #---- Point de fixation 
+      add_trace(x=Indicateur_4m_Last$SEMAINES+ddays(15),
+                y=0
+    )%>%
+      layout(xaxis = list(title = list(font = list(family = "Montserrat",size=10)),
+                            tickfont = list(family = "Montserrat", size = 8)),
+             yaxis = list(title = list(text="Nombre de personnes", font = list(family = "Montserrat",size=10)),
+                     tickfont = list(family = "Montserrat", size = 8),
+                     range = c(0,600),
+                     zeroline =FALSE),
+             autosize = TRUE,
+             #width = 500,
+             height = 200,
+             showlegend = FALSE
+    )
+   tags$p("Cet indicateur révèle le flux des ménages qui sollicitent un hébergement auprès du 115 pour la première fois. Il permet d'apprécier la pression exercée par le phénomène dynamique et multifactoriel du sans-abrisme.",
+    style = "font-family:'Montserrat';
+             font-size:10px;
+             font-style:italic;
+             color:#404040;
+    margin-top:-300px")
+```
+:::
+::::::::::::::
+
+---
+
+##### **Tableau**
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+#### TABLE #####
+
+dash_desc_m <- DASHBOARD_m %>%
+  arrange(desc(SEMAINES))
+
+#kable(dash_desc) %>%
+#  kable_styling(bootstrap_options = "striped", font_size=12)
+
+datatable(dash_desc_m, 
+          escape = FALSE,
+          rownames = FALSE,
+          colnames = c('<span style="color:#404040">SEMAINES</span>',
+                       '<span style="color:#404040">Indicateur 1</span>',
+                       '<span style="color:#404040">Évolution</span>',
+                       '<span style="color:#2A9D8F">Indicateur 2</span>',
+                       '<span style="color:#2A9D8F">Évolution</span>',
+                       '<span style="color:#D2386A">Indicateur 3</span>',
+                       '<span style="color:#D2386A">Évolution</span>',
+                       '<span style="color:#FF7E6A">Indicateur 4</span>',
+                       '<span style="color:#FF7E6A">Évolution</span>'),
+          extensions = c('Buttons','FixedHeader'),  
+          options = list(dom = 'Bp',
+                         buttons = c('csv', 'excel'),
+                         fixeHeader = TRUE#,
+                         #pageLength = -1 # pour avoir toute les lignes
+                         )
+          ) %>%
+  formatDate(
+    columns = 1,
+    method = "toLocaleDateString"
+  ) %>%
+  formatStyle(
+    'Men1_Evol',
+    backgroundColor = styleInterval(0,c("#7FBE7F","#FF7F7F")),
+    color="white"
+    #background = styleColorBar(dash_desc$Ind1_Evol, "green")
+  )%>%
+  formatStyle(
+    'Men2_Evol',
+    backgroundColor = styleInterval(0,c("#7FBE7F","#FF7F7F")),
+    color="white"         
+  )%>%
+  formatStyle(
+    'Men3_Evol',
+    backgroundColor = styleInterval(0,c("#7FBE7F","#FF7F7F")),
+    color="white"         
+  )%>%
+  formatStyle(
+    'Men4_Evol',
+    backgroundColor = styleInterval(0,c("#7FBE7F","#FF7F7F")),
+    color="white"         
+  )
+#### ####
+```
+### **Demandes**
+:::::::::::::: {.columns}
+::: {.column width="47%"}
+```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.width=6}
+#### INDICATEUR 5 ####  
+
+   Indicateur_Last <- DASHBOARD2 %>%
+      filter(SEMAINES== max(SEMAINES))
+
+  tags$p(Indicateur_Last$Indicateur5,
+      style = "font-family:'Montserrat';
+               font-size:50px;
+               font-weight:bold;
+               color:#156082")
+
+  tags$p("Personnes distinctes qui ont formulé au moins une demande d'hébergement auprès du 115",
+    style = "font-family:'Montserrat';
+             font-size:16px;
+             font-weight:bold;
+             color:#404040;
+    margin-top:-20px")
+ 
+    plot_ly(DASHBOARD2,
+            x=~SEMAINES,
+            y=~Indicateur5, 
+            type = 'scatter', 
+            mode = 'lines',
+            fill = "tozeroy",
+            fillcolor = "#D0DFE6",
+            line = list(shape = "spline",
+                        color="#156082",
+                        width = 1)
+    )%>%
+      config(displayModeBar = FALSE
+    )%>%
+      add_trace(x=Indicateur_5_Last$SEMAINES,
+                y=Indicateur_5_Last$Demandes_pers,
+                marker = list(color = "white",size = 10,line = list(color = "#156082", width = 3))
+    )%>% #---- Point de fixation 
+      add_trace(x=Indicateur_5_Last$SEMAINES+ddays(15),
+                y=0
+    )%>%
+      layout(xaxis = list(title = list(font = list(family = "Montserrat",size=10)),
+                            tickfont = list(family = "Montserrat", size = 8)),
+             yaxis = list(title = list(text="Nombre de personnes", font = list(family = "Montserrat",size=10)),
+                     tickfont = list(family = "Montserrat", size = 8),
+                     range = c(0,1000),
+                     zeroline =FALSE),
+             autosize = TRUE,
+             #width = 500,
+             height = 200,
+             showlegend = FALSE
+    )
+
+   tags$p("Cet indicateur révèle le nombre de personne qui ont sollicité le 115 dans la semaine, qu'elles aient
+          réussi à le joindre une ou plusieurs fois dans la période et qu'elle que soit leur situation résidentielle.
+          Il permet de prendre en compte le plus grand nombre de personnes malgré les difficultés d'accessibilité
+          au 115 et de lisser les effets journaliers observés.",
+    style = "font-family:'Montserrat';
+             font-size:10px;
+             font-style:italic;
+             color:#404040;
+    margin-top:-300px")
+```
+
+:::
+::: {.column width="6%"}
+:::
+
+::: {.column width="47%"}
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+#### TABLE #####
+
+dash_desc <- DASHBOARD2 %>%
+  arrange(desc(SEMAINES))
+
+dash_desc_d <- dash_desc[c(1,10,11)]
+
+#kable(dash_desc) %>%
+#  kable_styling(bootstrap_options = "striped", font_size=12)
+
+datatable(dash_desc_d, 
+          escape = FALSE,
+          rownames = FALSE,
+          colnames = c('<span style="color:#156082">Indicateur 5</span>',
+                       '<span style="color:#156082">Évolution</span>'
+                       ),
+          extensions = c('Buttons','FixedHeader'),  
+          options = list(dom = 'Bp',
+                         buttons = c('csv', 'excel'),
+                         fixeHeader = TRUE#,
+                         #pageLength = -1 # pour avoir toute les lignes
+                         )
+          ) %>%
+  formatDate(
+    columns = 1,
+    method = "toLocaleDateString"
+  ) %>%
+  formatStyle(
+    'Ind5_Evol',
+    backgroundColor = styleInterval(0,c("#7FBE7F","#FF7F7F")),
+    color="white"         
+  )
+#### ####
+```
+:::
+::::::::::::::
+
