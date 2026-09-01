@@ -1,0 +1,13 @@
+/* Définir la police et la taille du texte*/
+
+body{
+    font-family: Montserrat;
+    color: #404040;
+    background-color: #FFFFFF;
+    font-size: 16px
+ }
+ 
+/* Modifier la largeur de la page html */
+div.main-container {
+  max-width: 1300px !important;
+}

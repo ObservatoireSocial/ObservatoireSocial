@@ -1,0 +1,77 @@
+/* Pour supprimer la barre de scroll */
+/*html{
+  scrollbar-width: none;
+}*/
+
+body{
+    font-family: Montserrat;
+    color: #404040;
+    background-color: #FFFFFF;
+    font-size: 14px
+ }
+
+/* Pour modifier la largeur de la page html */
+div.main-container {
+  max-width: 1300px !important;
+}
+
+/* Pour insérer le logo */
+  #header.fluid-row::before {
+   content: "";
+   height: 150px;
+   width: 150px;
+   float: right;
+   background-image: url("Logo_short.png");
+   background-size: contain;
+   background-position: center center;
+   background-repeat: no-repeat;
+ }
+
+
+/* Pour modifier les titres des accordeons */
+/* a reprendre, ne fonctionne pas */
+.box-title a {
+    font-family: Montserrat;
+    color: #404040;
+    font-weight:bold;
+    font-size: 10px
+}
+
+.conteneur
+{
+position: relative;
+}
+
+.conteneur iframe
+{
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+}
+
+/* Pour modifier les cartes */
+card {
+  overflow-x: hidden;
+  overflow-y: hidden; /* Hide scrollbars */
+}
+
+/* Pour modifier les accordeons */
+.accordion-button.collapsed {
+  color: #404040;
+  background-color: #F2F2F2;
+  font-weight:bold;
+
+}
+
+/* Pour avoir deux colonnes*/
+.columns {display: flex;}
+
+/* Spécifique pour Crosstalk de R */
+.container-fluid.crosstalk-bscols {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 30px;
+  
+}

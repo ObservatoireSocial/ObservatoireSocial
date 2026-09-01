@@ -7,3 +7,7 @@ navbar:
       href: index.html
     - text: "Données"
       href: xxx_Data_Test1.html
+output:
+  html_document:
+    css: style.css
+  
