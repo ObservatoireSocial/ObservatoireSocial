@@ -1,6 +1,6 @@
 /* Définir la police et la taille du texte*/
 
-body{
+body {
     font-family: Montserrat;
     color: #404040;
     background-color: #FFFFFF;
@@ -8,6 +8,37 @@ body{
  }
  
 /* Modifier la largeur de la page html */
-div.main-container {
-  max-width: 1300px !important;
+div.main-container1, 
+div.main-container2,
+div.main-container3,
+div.main-container4 {
+  max-width: 1100px !important;
+  display: flex;
+}
+
+
+/* Fromatage définition */ 
+
+.bloc_def_Num {
+  float: left;
+  width: 15% !important;
+  margin-top: -15px;
+  /*height:10px;
+  background-color: red;*/
+}
+
+.bloc_def_Text {
+  float: left;
+  width : 75% !important;
+ /* height:10px;
+  background-color: green;*/
+}
+
+.vert {
+ position: absolute;
+  width: 2px;
+  height: 90%;
+  background: #aaa;
+  left: 50%;
+  top: 5%;
 }
