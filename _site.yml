@@ -1,12 +1,16 @@
 name: "my-website"
 output_dir: docs
 navbar:
-  title: "My Website"
+  title: "Accueil"
   left:
-    - text: "Accueil"
-      href: index.html
     - text: "Données"
-      href: xxx_Data_Test1.html
+      icon: fa-database
+      menu:
+      - text: Indicateurs DIHAL
+      - text: Définitions
+        href: DIHAL_Définitions.html
+      - text: "115"
+        href: DIHAL_115.html
 output:
   html_document:
     css: style.css
